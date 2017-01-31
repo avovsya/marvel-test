@@ -19,6 +19,8 @@
   "dependencies": {
     "async": "^2.1.4",
     "lodash": "^4.17.4",
+    "ngraph.graph": "0.0.12",
+    "ngraph.pagerank": "^0.1.4",
     "request": "^2.79.0"
   }
 }
