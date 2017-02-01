@@ -18,10 +18,12 @@
   "homepage": "https://github.com/avovsya/marvel-test#readme",
   "dependencies": {
     "async": "^2.1.4",
+    "fabric": "^1.7.3",
     "lodash": "^4.17.4",
+    "ngraph.fabric": "^0.1.0",
+    "ngraph.forcelayout": "^0.1.2",
     "ngraph.graph": "0.0.12",
     "ngraph.pagerank": "^0.1.4",
-    "ngraph.todot": "^0.2.1",
     "request": "^2.79.0"
   }
 }

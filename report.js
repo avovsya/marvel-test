@@ -3,7 +3,7 @@ var Graph = require('ngraph.graph');
 var pagerank = require('ngraph.pagerank');
 var fs = require('fs');
 
-var cache;
+var cache, mostPopularCharacters, mostInfluentialCharacters, graph, rank;
 
 try {
   cache = require('./cache.json'); // TODO exception if cache doesn't exist
@@ -27,13 +27,6 @@ function getMostPopularCharacters(characters, k) {
       .take(k)
       .value();
   return topCharacters;
-}
-
-function print10MostPopularCharactersFromCache() {
-  console.log('Most popular characters:');
-  var characters = getMostPopularCharacters(cache, 10);
-  _.each(characters, (c) => console.log(`${c.name}: ${c.comics.available}`));
-  console.log('===');
 }
 
 function buildComicsHashmap(characters) {
@@ -63,27 +56,35 @@ function buildGraph(comicsHash) {
   return graph;
 }
 
+function print10MostPopularCharactersFromCache() {
+  mostPopularCharacters = getMostPopularCharacters(cache, 10);
+
+  console.log('Most popular characters:');
+  _.each(mostPopularCharacters, (c) => console.log(`${c.name}: ${c.comics.available}`));
+  console.log('===');
+  console.log('');
+}
+
 // For each comics gather bucket of characters from that comics
 // Connect characters from the same comics with the vertex
 function print10MostInfluentialCharactersFromCache() {
   var comicsHash = buildComicsHashmap(cache);
-  var graph = buildGraph(comicsHash);
+  graph = buildGraph(comicsHash);
 
-  fs.writeFileSync('./visualizer/hash.json', JSON.stringify(comicsHash)); // Save graph to JSON format for visualisation in the browser
+  rank = pagerank(graph);
 
-  var rank = pagerank(graph);
+  mostInfluentialCharacters = _(rank)
+    .map((rank, name) => ({ name, rank }))
+    .orderBy((c) => c.rank, 'desc')
+    .take(10)
+    .value();
 
-  var top10 = _(rank)
-      .map((rank, name) => ({ name, rank }))
-      .orderBy((c) => c.rank, 'desc')
-      .take(10)
-      .value();
-
-  console.log('');
   console.log('Most influential characters:');
-  console.log(top10);
+  _.each(mostInfluentialCharacters, (c) => console.log(`${c.name}: ${c.rank}`));
   console.log('===');
+  console.log('');
 }
 
 print10MostPopularCharactersFromCache();
 print10MostInfluentialCharactersFromCache();
+require('./visualizer.js').renderGraphToFile(graph, rank, mostInfluentialCharacters, mostPopularCharacters);

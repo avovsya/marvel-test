@@ -1,4 +1,4 @@
 node_modules/*
 keys.json
 cache.json
-visualizer/hash.json
+*.png
