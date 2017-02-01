@@ -21,6 +21,7 @@
     "lodash": "^4.17.4",
     "ngraph.graph": "0.0.12",
     "ngraph.pagerank": "^0.1.4",
+    "ngraph.todot": "^0.2.1",
     "request": "^2.79.0"
   }
 }

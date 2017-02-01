@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var Graph = require('ngraph.graph');
 var pagerank = require('ngraph.pagerank');
+var fs = require('fs');
 
 var cache;
 
@@ -67,6 +68,9 @@ function buildGraph(comicsHash) {
 function print10MostInfluentialCharactersFromCache() {
   var comicsHash = buildComicsHashmap(cache);
   var graph = buildGraph(comicsHash);
+
+  fs.writeFileSync('./visualizer/hash.json', JSON.stringify(comicsHash)); // Save graph to JSON format for visualisation in the browser
+
   var rank = pagerank(graph);
 
   var top10 = _(rank)
@@ -79,7 +83,6 @@ function print10MostInfluentialCharactersFromCache() {
   console.log('Most influential characters:');
   console.log(top10);
   console.log('===');
-  // console.log(JSON.stringify(comicsHash, ' ', 2));
 }
 
 print10MostPopularCharactersFromCache();
