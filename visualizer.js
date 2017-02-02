@@ -10,16 +10,16 @@ function layoutGraph(graph, iterationsCount) {
 
 function renderToCanvas(graph, rank, top10, mostPopular, layout) {
   var graphRect = layout.getGraphRect();
-  var size = Math.max(graphRect.x2 - graphRect.x1, graphRect.y2 - graphRect.y1) * 1.8;
+  // var size = Math.max(graphRect.x2 - graphRect.x1, graphRect.y2 - graphRect.y1) * 1.8;
 
   var createFabricGraphics = require('ngraph.fabric');
-  var fabricGraphics = createFabricGraphics(graph, { width: size, height: size, layout: layout });
+  var fabricGraphics = createFabricGraphics(graph, { width: graphRect.x2 - graphRect.x1, height: graphRect.y2 - graphRect.y1, layout: layout });
   var fabric = require('fabric').fabric;
 
   require('./visualizer-settings')(rank, top10, mostPopular, fabricGraphics, fabric);
 
-  var scale = 6;
-  fabricGraphics.setTransform(size/2, size/2, scale);
+  // var scale = 4;
+  // fabricGraphics.setTransform(size/2, size/2, scale);
   fabricGraphics.renderOneFrame(); 
 
   return fabricGraphics.canvas;
@@ -40,7 +40,7 @@ function saveCanvasToFile(canvas, fileName) {
 
 module.exports = {
   renderGraphToFile: function(graph, rank, top10, mostPopular) {
-    var layout = layoutGraph(graph, 500);
+    var layout = layoutGraph(graph, 10000);
 
     var canvas = renderToCanvas(graph, rank, top10, mostPopular, layout);
 

@@ -5,7 +5,8 @@ var colors = {
   grey: '#8B8989',
   orange: '#FF8C00',
   green: '#EE3B3B',
-  red: '#436EEE'
+  red: '#436EEE',
+  black: "#000"
 };
 
 module.exports = function (rank, top10, mostPopular, fabricGraphics, fabric) {
@@ -39,6 +40,11 @@ module.exports = function (rank, top10, mostPopular, fabricGraphics, fabric) {
       fillColor = colors.green;
     }
 
+    if (!node.links || node.links.length === 0) {
+      radius = 10;
+      fillColor = colors.black;
+    }
+
     circle = new fabric.Circle({ radius: radius, fill: fillColor });
 
     circle.name = node.id;
@@ -47,7 +53,7 @@ module.exports = function (rank, top10, mostPopular, fabricGraphics, fabric) {
     circle.mp = mp;
     circle.availableComics = mp && mp.comics.available;
     circle.rank = (rank[node.id] * 100).toFixed(2) + '%';
-    circle.linksCount = node.links.length;
+    circle.linksCount = node.links && node.links.length;
     return circle;
   }
 
@@ -70,7 +76,6 @@ module.exports = function (rank, top10, mostPopular, fabricGraphics, fabric) {
         left: circle.left,
         top: circle.top
       });
-
     }
     fabricGraphics.canvas.add(caption);
   }
