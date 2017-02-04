@@ -14,13 +14,20 @@ try {
   process.exit(1);
 }
 
+function printSortedCharacters() {
+  console.log('\n1.1 Sorted characters: ');
+  _(cache)
+  .sortBy('name')
+  .each((c) => console.log(`${c.name}: ${c.comics.available}`));
+  console.log('===');
+}
+
 function print10MostPopularCharactersFromCache() {
   var mostPopularCharacters = getMostPopular(cache, 10);
 
-  console.log('Most popular characters:');
+  console.log('\n1.2 Most popular characters:');
   _.each(mostPopularCharacters, (c) => console.log(`${c.name}: ${c.comics.available}`));
   console.log('===');
-  console.log('');
 }
 
 // For each comics gather bucket of characters from that comics
@@ -28,22 +35,24 @@ function print10MostPopularCharactersFromCache() {
 function print10MostInfluentialCharactersFromCache() {
   var mostInfluentialCharacters = getMostInfluential(cache, 10);
 
-  console.log('Most influential characters:');
+  console.log('\n2 Most influential characters:');
   _.each(mostInfluentialCharacters, (c) => console.log(`${c.name}: ${c.rank}`));
   console.log('===');
-  console.log('');
 }
 
 function print10CharactersToInfect() {
   var virusTargets = getVirusTargets(cache, 10);
 
-  console.log('10 Virus targets');
-  _.each(virusTargets, (c) => console.log(`${c.name}`));
+  console.log('\n3 Virus targets:');
+  _.each(virusTargets, (c) => console.log(`${c}`));
   console.log('===');
-  console.log('');
 }
 
+printSortedCharacters();
 print10MostPopularCharactersFromCache();
 print10MostInfluentialCharactersFromCache();
 print10CharactersToInfect();
-// require('./visualizer.js').renderGraphToFile(characterGraph, rank, mostInfluentialCharacters, mostPopularCharacters);
+
+var pagerank = require('ngraph.pagerank');
+var graph = require('./lib/build-graph').buildNGraph(cache);
+var rank = pagerank(graph);

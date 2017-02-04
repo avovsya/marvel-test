@@ -30,7 +30,6 @@ function requestPage(page, apiKey, privateKey, callback) {
       });
     }
 
-    // TODO get rid of parsing. Write straight to disk
     body = JSON.parse(body);
 
     var lastPage = body.data.count < limit;
